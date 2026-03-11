@@ -5,6 +5,6 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   // Pour GitHub Pages avec custom domain (lestetesaclap.fr) → base: '/'
-  // Pour GitHub Pages sans custom domain → base: '/les-tetes-a-clap/'
-  base: '/',
+  // Pour GitHub Pages sans custom domain → base: '/tetesaclap/'
+  base: '/tetesaclap/',
 })
