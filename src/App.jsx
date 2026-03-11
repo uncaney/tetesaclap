@@ -193,13 +193,59 @@ const Events = () => (
   </section>
 );
 
-const ENCOUNTERS = [
-  { artist: "Philippe Croizon", film: "Pour le Meilleur", year: "2026", poster: IMG.pourLeMeilleurPoster },
-  { artist: "Alexandra Lamy", film: "Louise Violet", year: "2024", poster: IMG.louiseviolet },
-  { artist: "Pascal Elbé", film: "La Bonne Étoile", year: "2025", poster: IMG.labonneetoile },
-  { artist: "Victoria Abril", film: "Festival Espagnol", year: "2024", poster: IMG.festivalEspagnol },
+// Artists with real portrait photos (Unifrance press photos, stored locally)
+const PORTRAITS = {
+  "Omar Sy": `${import.meta.env.BASE_URL}portraits/omar-sy.jpg`,
+  "Alexandra Lamy": `${import.meta.env.BASE_URL}portraits/alexandra-lamy.jpg`,
+  "Pascal Elbé": `${import.meta.env.BASE_URL}portraits/pascal-elbe.jpg`,
+};
+
+// All artists who visited, with optional portrait or film poster
+const STAR_WALL = [
+  { name: "Omar Sy", role: "Acteur", note: "Intouchables, Lupin" },
+  { name: "Alexandra Lamy", role: "Actrice", note: "Louise Violet, 2024" },
+  { name: "Jamel Debbouze", role: "Acteur & Humoriste", note: "Indigènes, Amélie" },
+  { name: "Leïla Bekhti", role: "Actrice", note: "Tout ce qui brille" },
+  { name: "Philippe Croizon", role: "Héros & Aventurier", note: "Pour le Meilleur, 2026" },
+  { name: "Pascal Elbé", role: "Réalisateur & Acteur", note: "La Bonne Étoile, 2025" },
+  { name: "Jean-Pierre Jeunet", role: "Réalisateur", note: "Amélie, Le Fabuleux Destin" },
+  { name: "Elie Semoun", role: "Acteur & Humoriste", note: "" },
+  { name: "Victoria Abril", role: "Actrice", note: "Festival Espagnol, 2024" },
+  { name: "Jacques Perrin", role: "Acteur & Producteur", note: "Les Choristes, Océans" },
+  { name: "Corinne Masiero", role: "Actrice", note: "Les Invisibles" },
+  { name: "Youssef Hajdi", role: "Comédien · Parrain", note: "Parrain de l'association" },
 ];
-const OTHER_ARTISTS = ["Omar Sy","Leïla Bekhti","Jamel Debbouze","Elie Semoun","Jacques Perrin","Jean-Pierre Jeunet","Corinne Masiero","Youssef Hajdi"];
+
+const StarCard = ({ star }) => {
+  const portrait = PORTRAITS[star.name];
+  const initials = star.name.split(" ").map(w => w[0]).join("");
+  return (
+    <div style={{ borderRadius: 10, overflow: "hidden", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(212,168,83,0.12)", transition: "all 0.4s", cursor: "default" }} onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(212,168,83,0.4)"; e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 8px 30px rgba(212,168,83,0.1)"; }} onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(212,168,83,0.12)"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
+      {/* Image area */}
+      <div style={{ height: 200, position: "relative", overflow: "hidden" }}>
+        {portrait ? (
+          <>
+            <img src={portrait} alt={star.name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(transparent 40%, rgba(12,10,8,0.9))" }} />
+          </>
+        ) : (
+          <div style={{ width: "100%", height: "100%", background: `linear-gradient(135deg, rgba(212,168,83,0.15), rgba(212,168,83,0.05))`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 48, fontWeight: 700, color: "rgba(212,168,83,0.3)" }}>{initials}</div>
+          </div>
+        )}
+        {/* Name overlay at bottom of image */}
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "12px 14px" }}>
+          <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 17, fontWeight: 700, color: "#FAF3E0", textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}>{star.name}</div>
+        </div>
+      </div>
+      {/* Info area */}
+      <div style={{ padding: "10px 14px 14px" }}>
+        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "#D4A853", fontWeight: 600 }}>{star.role}</div>
+        {star.note && <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "rgba(250,243,224,0.4)", marginTop: 3 }}>{star.note}</div>}
+      </div>
+    </div>
+  );
+};
 
 const WallOfFame = () => (
   <section id="galerie" style={{ padding: "100px 24px", position: "relative", overflow: "hidden" }}>
@@ -208,32 +254,10 @@ const WallOfFame = () => (
     <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 2 }}>
       <SectionLabel>Ils nous ont fait l'honneur de leur présence</SectionLabel>
       <SectionTitle>Mur des étoiles</SectionTitle>
-
-      {/* Featured encounters — poster cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20, marginBottom: 48 }}>
-        {ENCOUNTERS.map(e => (
-          <div key={e.artist} style={{ borderRadius: 10, overflow: "hidden", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(212,168,83,0.15)", transition: "all 0.4s", cursor: "default" }} onMouseEnter={el => { el.currentTarget.style.borderColor = "rgba(212,168,83,0.4)"; el.currentTarget.style.transform = "translateY(-4px)"; }} onMouseLeave={el => { el.currentTarget.style.borderColor = "rgba(212,168,83,0.15)"; el.currentTarget.style.transform = "translateY(0)"; }}>
-            <div style={{ position: "relative", overflow: "hidden" }}>
-              <img src={e.poster} alt={e.film} style={{ width: "100%", display: "block", objectFit: "cover", maxHeight: 300 }} />
-              <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "40px 16px 14px", background: "linear-gradient(transparent, rgba(12,10,8,0.95))" }}>
-                <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 17, fontWeight: 700, color: "#FAF3E0" }}>{e.artist}</div>
-                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(212,168,83,0.8)", marginTop: 2 }}>{e.film} · {e.year}</div>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18 }}>
+        {STAR_WALL.map(star => <StarCard key={star.name} star={star} />)}
       </div>
-
-      {/* Other artists as chips */}
-      <div style={{ textAlign: "center", marginBottom: 12 }}>
-        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: "rgba(212,168,83,0.6)", marginBottom: 16 }}>Également venus à notre rencontre</div>
-      </div>
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 12 }}>
-        {OTHER_ARTISTS.map(name => (
-          <div key={name} style={{ padding: "12px 24px", borderRadius: 40, border: "1px solid rgba(212,168,83,0.25)", background: "rgba(212,168,83,0.05)", fontFamily: "'Playfair Display', Georgia, serif", fontSize: 16, color: "rgba(250,243,224,0.8)", transition: "all 0.3s", cursor: "default" }} onMouseEnter={e => { e.target.style.background = "rgba(212,168,83,0.15)"; e.target.style.borderColor = "#D4A853"; e.target.style.color = "#D4A853"; }} onMouseLeave={e => { e.target.style.background = "rgba(212,168,83,0.05)"; e.target.style.borderColor = "rgba(212,168,83,0.25)"; e.target.style.color = "rgba(250,243,224,0.8)"; }}>{name}</div>
-        ))}
-      </div>
-      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(250,243,224,0.4)", textAlign: "center", marginTop: 24, fontStyle: "italic" }}>…et beaucoup d'autres depuis 2006</p>
+      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(250,243,224,0.4)", textAlign: "center", marginTop: 32, fontStyle: "italic" }}>…et beaucoup d'autres depuis 2006</p>
     </div>
   </section>
 );
