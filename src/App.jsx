@@ -19,8 +19,6 @@ const EVENTS = [
   { id: 4, title: "Festival du Film Espagnol", director: "Nîmes", date: "Avril 2025", time: "", venue: "CGR Nîmes", guests: ["Victoria Abril (2024)"], description: "Festival national dédié au cinéma espagnol. Projections, conférences et soirées avec les artistes.", image: IMG.festivalEspagnol, upcoming: false },
 ];
 
-const ARTISTS = ["Omar Sy","Leïla Bekhti","Jamel Debbouze","Alexandra Lamy","Elie Semoun","Jacques Perrin","Jean-Pierre Jeunet","Philippe Croizon","Pascal Elbé","Victoria Abril","Corinne Masiero","Youssef Hajdi"];
-
 const STATS = [
   { number: "20", label: "ans de passion", suffix: "" },
   { number: "6000", label: "entrées / an", suffix: "+" },
@@ -195,14 +193,43 @@ const Events = () => (
   </section>
 );
 
+const ENCOUNTERS = [
+  { artist: "Philippe Croizon", film: "Pour le Meilleur", year: "2026", poster: IMG.pourLeMeilleurPoster },
+  { artist: "Alexandra Lamy", film: "Louise Violet", year: "2024", poster: IMG.louiseviolet },
+  { artist: "Pascal Elbé", film: "La Bonne Étoile", year: "2025", poster: IMG.labonneetoile },
+  { artist: "Victoria Abril", film: "Festival Espagnol", year: "2024", poster: IMG.festivalEspagnol },
+];
+const OTHER_ARTISTS = ["Omar Sy","Leïla Bekhti","Jamel Debbouze","Elie Semoun","Jacques Perrin","Jean-Pierre Jeunet","Corinne Masiero","Youssef Hajdi"];
+
 const WallOfFame = () => (
-  <section id="galerie" style={{ padding: "80px 24px", position: "relative", overflow: "hidden", background: "#0C0A08" }}>
+  <section id="galerie" style={{ padding: "100px 24px", position: "relative", overflow: "hidden" }}>
+    <div style={{ position: "absolute", inset: 0, zIndex: 0, backgroundImage: `url(${IMG.cinemaAudience})`, backgroundSize: "cover", backgroundPosition: "center", filter: "brightness(0.07) saturate(0.3)" }} />
     <GrainOverlay />
     <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 2 }}>
       <SectionLabel>Ils nous ont fait l'honneur de leur présence</SectionLabel>
       <SectionTitle>Mur des étoiles</SectionTitle>
+
+      {/* Featured encounters — poster cards */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20, marginBottom: 48 }}>
+        {ENCOUNTERS.map(e => (
+          <div key={e.artist} style={{ borderRadius: 10, overflow: "hidden", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(212,168,83,0.15)", transition: "all 0.4s", cursor: "default" }} onMouseEnter={el => { el.currentTarget.style.borderColor = "rgba(212,168,83,0.4)"; el.currentTarget.style.transform = "translateY(-4px)"; }} onMouseLeave={el => { el.currentTarget.style.borderColor = "rgba(212,168,83,0.15)"; el.currentTarget.style.transform = "translateY(0)"; }}>
+            <div style={{ position: "relative", overflow: "hidden" }}>
+              <img src={e.poster} alt={e.film} style={{ width: "100%", display: "block", objectFit: "cover", maxHeight: 300 }} />
+              <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "40px 16px 14px", background: "linear-gradient(transparent, rgba(12,10,8,0.95))" }}>
+                <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 17, fontWeight: 700, color: "#FAF3E0" }}>{e.artist}</div>
+                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(212,168,83,0.8)", marginTop: 2 }}>{e.film} · {e.year}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Other artists as chips */}
+      <div style={{ textAlign: "center", marginBottom: 12 }}>
+        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: "rgba(212,168,83,0.6)", marginBottom: 16 }}>Également venus à notre rencontre</div>
+      </div>
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 12 }}>
-        {ARTISTS.map(name => (
+        {OTHER_ARTISTS.map(name => (
           <div key={name} style={{ padding: "12px 24px", borderRadius: 40, border: "1px solid rgba(212,168,83,0.25)", background: "rgba(212,168,83,0.05)", fontFamily: "'Playfair Display', Georgia, serif", fontSize: 16, color: "rgba(250,243,224,0.8)", transition: "all 0.3s", cursor: "default" }} onMouseEnter={e => { e.target.style.background = "rgba(212,168,83,0.15)"; e.target.style.borderColor = "#D4A853"; e.target.style.color = "#D4A853"; }} onMouseLeave={e => { e.target.style.background = "rgba(212,168,83,0.05)"; e.target.style.borderColor = "rgba(212,168,83,0.25)"; e.target.style.color = "rgba(250,243,224,0.8)"; }}>{name}</div>
         ))}
       </div>
@@ -255,6 +282,7 @@ export default function App() {
         ::selection { background: rgba(212,168,83,0.3); color: #FAF3E0; }
         @media (max-width: 768px) {
           nav > div > div:last-child a:not(:last-child) { display: none !important; }
+          section > div > div[style*="grid-template-columns: repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
           section > div > div[style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; }
           section > div > div[style*="grid-template-columns: 120px"] { grid-template-columns: 80px 1fr !important; }
           section > div > div[style*="grid-template-columns: 80px"] { grid-template-columns: 60px 1fr !important; }
