@@ -219,10 +219,21 @@ const Hero = () => {
   return (
     <section style={{
       position: "relative", minHeight: "100vh",
-      background: "linear-gradient(180deg, #0C0A08 0%, #1A1510 40%, #0C0A08 100%)",
+      background: "#0C0A08",
       display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
       overflow: "hidden", padding: "120px 24px 80px",
     }}>
+      {/* Background image */}
+      <div style={{
+        position: "absolute", inset: 0, zIndex: 0,
+        backgroundImage: `url(${import.meta.env.BASE_URL}images/hero-cinema.jpg)`,
+        backgroundSize: "cover", backgroundPosition: "center",
+        filter: "brightness(0.25) saturate(0.6)",
+      }} />
+      <div style={{
+        position: "absolute", inset: 0, zIndex: 0,
+        background: "linear-gradient(180deg, rgba(12,10,8,0.7) 0%, rgba(12,10,8,0.4) 40%, rgba(12,10,8,0.9) 100%)",
+      }} />
       <GrainOverlay />
       <FilmStrip side="left" />
       <FilmStrip side="right" />
@@ -388,9 +399,15 @@ const StatsBar = () => (
 const About = () => (
   <section id="about" style={{
     position: "relative",
-    background: "linear-gradient(180deg, #0C0A08, #14110D)",
+    background: "#0C0A08",
     padding: "100px 24px", overflow: "hidden",
   }}>
+    <div style={{
+      position: "absolute", inset: 0, zIndex: 0,
+      backgroundImage: `url(${import.meta.env.BASE_URL}images/about-cinema.jpg)`,
+      backgroundSize: "cover", backgroundPosition: "center",
+      filter: "brightness(0.12) saturate(0.4)",
+    }} />
     <GrainOverlay />
     <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 2 }}>
       {/* Section label */}
@@ -482,8 +499,14 @@ const Events = () => (
   <section id="events" style={{
     background: "#14110D",
     padding: "100px 24px",
-    position: "relative",
+    position: "relative", overflow: "hidden",
   }}>
+    <div style={{
+      position: "absolute", inset: 0, zIndex: 0,
+      backgroundImage: `url(${import.meta.env.BASE_URL}images/events-bg.jpg)`,
+      backgroundSize: "cover", backgroundPosition: "center top",
+      filter: "brightness(0.08) saturate(0.3)",
+    }} />
     <GrainOverlay />
     <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 2 }}>
       <div style={{
@@ -569,6 +592,12 @@ const WallOfFame = () => (
     padding: "80px 24px",
     position: "relative", overflow: "hidden",
   }}>
+    <div style={{
+      position: "absolute", inset: 0, zIndex: 0,
+      backgroundImage: `url(${import.meta.env.BASE_URL}images/gallery-bg.jpg)`,
+      backgroundSize: "cover", backgroundPosition: "center",
+      filter: "brightness(0.1) saturate(0.3) sepia(0.3)",
+    }} />
     <GrainOverlay />
     <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 2 }}>
       <div style={{
@@ -632,16 +661,19 @@ const Activities = () => {
       icon: "🎓",
       title: "Festival Scolaire",
       desc: "Chaque année, 5 000 à 6 000 enfants de Beaucaire, Tarascon et alentours découvrent le cinéma grâce à notre dispositif en partenariat avec l'Éducation nationale.",
+      image: `${import.meta.env.BASE_URL}images/scolaire.jpg`,
     },
     {
       icon: "🎬",
       title: "Projections-Rencontres",
       desc: "Avant-premières et projections exceptionnelles au CGR Nîmes, toujours suivies d'échanges avec les équipes des films : réalisateurs, comédiens, scénaristes.",
+      image: `${import.meta.env.BASE_URL}images/events-bg.jpg`,
     },
     {
       icon: "🇪🇸",
       title: "Festival du Film Espagnol",
       desc: "Un festival national au cœur de Nîmes célébrant le cinéma espagnol avec projections, conférences et rencontres avec les artistes.",
+      image: `${import.meta.env.BASE_URL}images/gallery-bg.jpg`,
     },
   ];
 
@@ -673,10 +705,11 @@ const Activities = () => {
         }}>
           {pillars.map(p => (
             <div key={p.title} style={{
-              padding: 36, borderRadius: 12,
+              borderRadius: 12,
               background: "rgba(255,255,255,0.02)",
               border: "1px solid rgba(255,255,255,0.06)",
               transition: "all 0.4s",
+              overflow: "hidden",
             }}
             onMouseEnter={e => {
               e.currentTarget.style.background = "rgba(212,168,83,0.06)";
@@ -689,7 +722,22 @@ const Activities = () => {
               e.currentTarget.style.transform = "translateY(0)";
             }}
             >
-              <div style={{ fontSize: 40, marginBottom: 20 }}>{p.icon}</div>
+              {/* Card image */}
+              <div style={{
+                height: 160, position: "relative",
+                backgroundImage: `url(${p.image})`,
+                backgroundSize: "cover", backgroundPosition: "center",
+              }}>
+                <div style={{
+                  position: "absolute", inset: 0,
+                  background: "linear-gradient(180deg, rgba(12,10,8,0.3), rgba(12,10,8,0.85))",
+                }} />
+                <div style={{
+                  position: "absolute", bottom: 16, left: 20,
+                  fontSize: 36,
+                }}>{p.icon}</div>
+              </div>
+              <div style={{ padding: "20px 24px 28px" }}>
               <h3 style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
                 fontSize: 22, fontWeight: 700, color: "#FAF3E0",
@@ -699,6 +747,7 @@ const Activities = () => {
                 fontFamily: "'DM Sans', sans-serif", fontSize: 14,
                 color: "rgba(250,243,224,0.6)", lineHeight: 1.7, margin: 0,
               }}>{p.desc}</p>
+              </div>
             </div>
           ))}
         </div>
