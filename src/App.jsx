@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
 
 const IMG = {
-  // Les Héritiers — Ahmed Dramé (Unifrance)
-  heritiersCover: "https://medias.unifrance.org/medias/116/240/127092/format_page/once-in-a-lifetime.jpg",
-  heritiersPoster: "https://medias.unifrance.org/medias/43/17/135467/format_web/ahmed-drame.jpg",
-  // Pour le Meilleur — Le Pacte
   pourLeMeilleurCover: "https://le-pacte.com/img/04802f4e-8cfe-49fa-84b4-6e4ce8d7ee40/cover.jpg?fm=jpg&q=80&fit=max&w=1400",
   pourLeMeilleurPoster: "https://le-pacte.com/img/a0dda167-c837-4593-85a0-861ccbd112a2/120x160-pour-le-meilleur-fauteuil-15-01-bd.jpg?fm=jpg&q=80&fit=max&w=500",
   labonneetoile: "https://medias.unifrance.org/medias/155/146/299675/format_page/lucky-star.jpg",
@@ -17,7 +13,6 @@ const IMG = {
 };
 
 const EVENTS = [
-  { id: 0, title: "Les Héritiers", director: "Marie-Castille Mention-Schaar", date: "Prochainement", time: "", venue: "CGR Nîmes", guests: ["Ahmed Dramé"], description: "Projection en présence d'Ahmed Dramé, acteur et co-scénariste. D'après une histoire vraie : une prof décide de faire passer un concours national d'Histoire à sa classe de seconde la plus faible.", ticketUrl: "", image: IMG.heritiersPoster, coverImage: IMG.heritiersCover, upcoming: true, isHero: true },
   { id: 1, title: "Pour le Meilleur", director: "Marie-Castille Mention-Schaar", date: "Mardi 24 mars 2026", time: "19h30", venue: "CGR Nîmes", guests: ["Philippe Croizon", "Suzana Sabino", "Lilly-Fleur Pointeaux"], description: "En présence de la réalisatrice, de Philippe Croizon et son épouse Suzana Sabino, héros de cette histoire.", ticketUrl: "https://www.helloasso.com/associations/les-tetes-a-clap/evenements/avant-premiere-pour-le-meilleur-mardi-24-mars-2026-19h30-cgr-nimes", image: IMG.pourLeMeilleurPoster, upcoming: true },
   { id: 2, title: "La Bonne Étoile", director: "Pascal Elbé", date: "8 octobre 2025", time: "20h", venue: "CGR Nîmes", guests: ["Pascal Elbé", "Benoît Poelvoorde"], description: "Projection en présence du réalisateur et comédien, suivie d'un débat avec le SE-UNSA 30.", image: IMG.labonneetoile, upcoming: false },
   { id: 3, title: "Louise Violet", director: "Éric Besnard", date: "Novembre 2024", time: "20h", venue: "CGR Nîmes", guests: ["Alexandra Lamy"], description: "Énorme succès avec un public nîmois venu très nombreux pour rencontrer Alexandra Lamy.", image: IMG.louiseviolet, upcoming: false },
@@ -73,10 +68,10 @@ const Nav = ({ scrolled }) => (
 );
 
 const Hero = () => {
-  const ev = EVENTS.find(e => e.isHero) || EVENTS[0];
+  const ev = EVENTS[0];
   return (
     <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", padding: "120px 24px 80px" }}>
-      <div style={{ position: "absolute", inset: 0, zIndex: 0, backgroundImage: `url(${ev.coverImage || IMG.cinemaSeats})`, backgroundSize: "cover", backgroundPosition: "center 30%", filter: "brightness(0.3) saturate(0.7)" }} />
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, backgroundImage: `url(${IMG.pourLeMeilleurCover})`, backgroundSize: "cover", backgroundPosition: "center 30%", filter: "brightness(0.3) saturate(0.7)" }} />
       <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "linear-gradient(180deg, rgba(12,10,8,0.6) 0%, rgba(12,10,8,0.3) 40%, rgba(12,10,8,0.85) 100%)" }} />
       <GrainOverlay />
       <div style={{ position: "relative", zIndex: 2, maxWidth: 900, display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -89,7 +84,7 @@ const Hero = () => {
             <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 700, color: "#FAF3E0", lineHeight: 1.05, margin: "0 0 8px", textShadow: "0 4px 30px rgba(0,0,0,0.5)" }}>{ev.title}</h1>
             <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 17, color: "rgba(250,243,224,0.6)", fontStyle: "italic", margin: "0 0 24px" }}>de {ev.director}</p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 16, marginBottom: 24 }}>
-              {[{ icon: "📅", text: ev.date }, ev.time && { icon: "🕐", text: ev.time }, { icon: "📍", text: ev.venue }].filter(Boolean).map(d => (
+              {[{ icon: "📅", text: ev.date }, { icon: "🕐", text: ev.time }, { icon: "📍", text: ev.venue }].map(d => (
                 <div key={d.text} style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(250,243,224,0.8)" }}><span>{d.icon}</span>{d.text}</div>
               ))}
             </div>
@@ -97,11 +92,8 @@ const Hero = () => {
               <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, letterSpacing: 3, textTransform: "uppercase", color: "#D4A853", marginBottom: 6 }}>En présence de</div>
               <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 16, color: "#FAF3E0", lineHeight: 1.5 }}>{ev.guests.join(" · ")}</div>
             </div>
-            {ev.ticketUrl ? (
-              <a href={ev.ticketUrl} target="_blank" rel="noopener" style={{ display: "inline-block", marginTop: 24, background: "linear-gradient(135deg, #D4A853, #B8860B)", color: "#0C0A08", padding: "14px 40px", borderRadius: 6, textDecoration: "none", fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", boxShadow: "0 4px 30px rgba(212,168,83,0.3)" }}>Réserver mes places</a>
-            ) : (
-              <div style={{ display: "inline-block", marginTop: 24, background: "rgba(212,168,83,0.15)", border: "1px solid rgba(212,168,83,0.3)", color: "#D4A853", padding: "14px 40px", borderRadius: 6, fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase" }}>Réservations bientôt disponibles</div>
-            )}
+            <Countdown targetDate="2026-03-24T19:30:00+01:00" />
+            <a href={ev.ticketUrl} target="_blank" rel="noopener" style={{ display: "inline-block", marginTop: 24, background: "linear-gradient(135deg, #D4A853, #B8860B)", color: "#0C0A08", padding: "14px 40px", borderRadius: 6, textDecoration: "none", fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", boxShadow: "0 4px 30px rgba(212,168,83,0.3)" }}>Réserver mes places</a>
           </div>
         </div>
       </div>
@@ -181,7 +173,7 @@ const Events = () => (
       <SectionLabel>Programmation</SectionLabel>
       <SectionTitle>Nos événements</SectionTitle>
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-        {EVENTS.filter(e => !e.isHero).map(ev => (
+        {EVENTS.map(ev => (
           <div key={ev.id} style={{ display: "grid", gridTemplateColumns: ev.upcoming ? "120px 1fr auto" : "80px 1fr auto", gap: ev.upcoming ? 28 : 20, alignItems: "center", padding: ev.upcoming ? "20px 24px" : "14px 20px", borderRadius: 10, background: ev.upcoming ? "linear-gradient(135deg, rgba(212,168,83,0.12), rgba(212,168,83,0.04))" : "rgba(255,255,255,0.02)", border: ev.upcoming ? "1px solid rgba(212,168,83,0.3)" : "1px solid rgba(255,255,255,0.06)" }}>
             <div style={{ width: ev.upcoming ? 120 : 80, borderRadius: 6, overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.4)", flexShrink: 0 }}>
               <img src={ev.image} alt={ev.title} style={{ width: "100%", display: "block", objectFit: "cover" }} />
@@ -206,7 +198,6 @@ const PORTRAITS = {
   "Omar Sy": `${import.meta.env.BASE_URL}portraits/omar-sy.jpg`,
   "Alexandra Lamy": `${import.meta.env.BASE_URL}portraits/alexandra-lamy.jpg`,
   "Pascal Elbé": `${import.meta.env.BASE_URL}portraits/pascal-elbe.jpg`,
-  "Ahmed Dramé": `${import.meta.env.BASE_URL}portraits/ahmed-drame.jpg`,
 };
 
 // All artists who visited, with optional portrait or film poster
@@ -215,7 +206,6 @@ const STAR_WALL = [
   { name: "Alexandra Lamy", role: "Actrice", note: "Louise Violet, 2024" },
   { name: "Jamel Debbouze", role: "Acteur & Humoriste", note: "Indigènes, Amélie" },
   { name: "Leïla Bekhti", role: "Actrice", note: "Tout ce qui brille" },
-  { name: "Ahmed Dramé", role: "Acteur & Scénariste", note: "Les Héritiers" },
   { name: "Philippe Croizon", role: "Héros & Aventurier", note: "Pour le Meilleur, 2026" },
   { name: "Pascal Elbé", role: "Réalisateur & Acteur", note: "La Bonne Étoile, 2025" },
   { name: "Jean-Pierre Jeunet", role: "Réalisateur", note: "Amélie, Le Fabuleux Destin" },
